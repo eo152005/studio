@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react";
+
 export type ProductCategory =
   | 'LPG'
   | 'Propylene'
@@ -12,6 +14,7 @@ export interface Product {
   name: ProductCategory;
   maxSlots: number;
   icon: React.ElementType;
+  iconName: string;
 }
 
 export interface ParkingRecord {

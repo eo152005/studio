@@ -16,6 +16,7 @@ import type { ParkingRecord } from '@/lib/types';
 import { formatDistanceToNow } from 'date-fns';
 import { ExitDialog } from './exit-dialog';
 import { AlertCircle } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const OVERSTAY_HOURS = 24;
 
@@ -56,18 +57,9 @@ const isOverstayed = (timeIn: Date) => {
     return hoursParked > OVERSTAY_HOURS;
 };
 
-
-export function ParkedVehiclesTable({ data }: { data: ParkingRecord[] }) {
-  const [selectedVehicle, setSelectedVehicle] = useState<ParkingRecord | null>(null);
-
-  return (
-    <>
-      <Card>
-        <CardHeader>
-          <CardTitle>Currently Parked Vehicles</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
+const VehicleTable = ({ data, onExitClick }: { data: ParkingRecord[], onExitClick: (vehicle: ParkingRecord) => void }) => {
+    return (
+        <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Token No.</TableHead>
@@ -92,7 +84,7 @@ export function ParkedVehiclesTable({ data }: { data: ParkingRecord[] }) {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setSelectedVehicle(vehicle)}
+                        onClick={() => onExitClick(vehicle)}
                       >
                         Exit
                       </Button>
@@ -101,13 +93,41 @@ export function ParkedVehiclesTable({ data }: { data: ParkingRecord[] }) {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center">
-                    No vehicles currently parked.
+                  <TableCell colSpan={6} className="text-center h-24">
+                    No vehicles found.
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
+    );
+}
+
+export function ParkedVehiclesTable({ data }: { data: ParkingRecord[] }) {
+  const [selectedVehicle, setSelectedVehicle] = useState<ParkingRecord | null>(null);
+  const overstayedVehicles = data.filter(v => isOverstayed(new Date(v.timeIn)));
+
+  return (
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>Currently Parked Vehicles</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="all">
+            <TabsList>
+              <TabsTrigger value="all">All Vehicles ({data.length})</TabsTrigger>
+              <TabsTrigger value="overstaying" className="text-destructive">
+                Overstaying ({overstayedVehicles.length})
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="all">
+              <VehicleTable data={data} onExitClick={setSelectedVehicle} />
+            </TabsContent>
+            <TabsContent value="overstaying">
+              <VehicleTable data={overstayedVehicles} onExitClick={setSelectedVehicle} />
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
       {selectedVehicle && (

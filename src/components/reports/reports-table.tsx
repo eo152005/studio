@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useEffect, useState } from 'react';
+import { getYear, getMonth } from 'date-fns';
 
 type ProductData = {
     id: ProductCategory;
@@ -47,15 +48,24 @@ export function ReportsTable({ data, products }: { data: ParkingRecord[]; produc
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const handleFilterChange = (value: string) => {
+  const handleFilterChange = (filterType: 'product' | 'year' | 'month', value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (value && value !== 'all') {
-      params.set('product', value);
+      params.set(filterType, value);
     } else {
-      params.delete('product');
+      params.delete(filterType);
     }
+
+    if (filterType === 'year' && value === 'all') {
+        params.delete('month');
+    }
+
     router.replace(`${pathname}?${params.toString()}`);
   };
+
+  const availableYears = Array.from(new Set(data.map(item => getYear(new Date(item.timeIn)).toString()))).sort((a,b) => parseInt(b) - parseInt(a));
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const selectedYear = searchParams.get('year');
 
   return (
     <Card>
@@ -65,14 +75,32 @@ export function ReportsTable({ data, products }: { data: ParkingRecord[]; produc
                 <CardTitle>Parking History Reports</CardTitle>
                 <CardDescription>View and export historical parking data.</CardDescription>
             </div>
-            <div className="flex items-center gap-2">
-                <Select onValueChange={handleFilterChange} defaultValue={searchParams.get('product') || 'all'}>
-                    <SelectTrigger className='w-full md:w-[180px]'>
+            <div className="flex items-center gap-2 flex-wrap">
+                <Select onValueChange={(v) => handleFilterChange('product', v)} defaultValue={searchParams.get('product') || 'all'}>
+                    <SelectTrigger className='w-full sm:w-auto md:w-[150px]'>
                         <SelectValue placeholder="Filter by product" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="all">All Products</SelectItem>
                         {products.map(p => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
+                    </SelectContent>
+                </Select>
+                 <Select onValueChange={(v) => handleFilterChange('year', v)} defaultValue={searchParams.get('year') || 'all'}>
+                    <SelectTrigger className='w-full sm:w-auto md:w-[120px]'>
+                        <SelectValue placeholder="Filter by Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All Years</SelectItem>
+                        {availableYears.map(y => <SelectItem key={y} value={y}>{y}</SelectItem>)}
+                    </SelectContent>
+                </Select>
+                 <Select onValueChange={(v) => handleFilterChange('month', v)} defaultValue={searchParams.get('month') || 'all'} disabled={!selectedYear || selectedYear === 'all'}>
+                    <SelectTrigger className='w-full sm:w-auto md:w-[150px]'>
+                        <SelectValue placeholder="Filter by Month" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All Months</SelectItem>
+                        {months.map((m, i) => <SelectItem key={m} value={i.toString()}>{m}</SelectItem>)}
                     </SelectContent>
                 </Select>
                 <Button variant="outline" disabled>

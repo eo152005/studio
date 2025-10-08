@@ -7,15 +7,27 @@ import { EntryForm } from '@/components/entry/entry-form';
 
 export default function DashboardPage() {
   const products = getProducts();
-  const productStats = products.map(product => ({
-    id: product.id,
-    name: product.name,
-    maxSlots: product.maxSlots,
-    current: getParkedCountByProduct(product.id),
-  }));
-
   const parkedVehicles = getParkedVehicles();
-  const productData = products.map(({ icon, ...rest }) => rest);
+  const totalCapacity = products.reduce((acc, p) => acc + p.maxSlots, 0);
+
+  const productStats = [
+    {
+      id: 'total',
+      name: 'Total Vehicles',
+      maxSlots: totalCapacity,
+      current: parkedVehicles.length,
+      iconName: 'Truck'
+    },
+    ...products.map(product => ({
+      id: product.id,
+      name: product.name,
+      maxSlots: product.maxSlots,
+      current: getParkedCountByProduct(product.id),
+      iconName: product.iconName,
+    }))
+  ];
+
+  const productData = products.map(({ icon, iconName, ...rest }) => rest);
 
   return (
     <div className="space-y-6">
