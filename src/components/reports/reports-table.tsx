@@ -11,7 +11,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import type { ParkingRecord, Product } from '@/lib/types';
+import type { ParkingRecord, ProductCategory } from '@/lib/types';
 import { Download } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -22,6 +22,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useEffect, useState } from 'react';
+
+type ProductData = {
+    id: ProductCategory;
+    name: ProductCategory;
+    maxSlots: number;
+};
 
 function ClientFormattedDate({ date }: { date: Date | string | undefined }) {
   const [formattedDate, setFormattedDate] = useState('N/A');
@@ -36,7 +42,7 @@ function ClientFormattedDate({ date }: { date: Date | string | undefined }) {
 }
 
 
-export function ReportsTable({ data, products }: { data: ParkingRecord[]; products: Product[] }) {
+export function ReportsTable({ data, products }: { data: ParkingRecord[]; products: ProductData[] }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

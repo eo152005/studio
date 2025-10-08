@@ -19,9 +19,11 @@ export default function ReportsPage({
     history = history.filter(item => item.product === currentProduct);
   }
 
+  const productData = products.map(({ icon, ...rest }) => rest);
+
   return (
     <Suspense fallback={<Skeleton className="h-96 w-full" />}>
-        <ReportsTable data={history} products={products} />
+        <ReportsTable data={history} products={productData} />
     </Suspense>
   );
 }
