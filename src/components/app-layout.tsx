@@ -42,52 +42,56 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <Link href="/" legacyBehavior passHref>
-                <SidebarMenuButton
-                  isActive={isActive('/')}
-                  tooltip="Dashboard"
-                  aria-label="Dashboard"
-                >
+              <SidebarMenuButton
+                asChild
+                isActive={isActive('/')}
+                tooltip="Dashboard"
+                aria-label="Dashboard"
+              >
+                <Link href="/">
                   <Gauge />
                   <span>Dashboard</span>
-                </SidebarMenuButton>
-              </Link>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <Link href="/entry" legacyBehavior passHref>
-                <SidebarMenuButton
-                  isActive={isActive('/entry')}
-                  tooltip="New Entry"
-                  aria-label="New Entry"
-                >
+              <SidebarMenuButton
+                asChild
+                isActive={isActive('/entry')}
+                tooltip="New Entry"
+                aria-label="New Entry"
+              >
+                <Link href="/entry">
                   <Car />
                   <span>New Entry</span>
-                </SidebarMenuButton>
-              </Link>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <Link href="/reports" legacyBehavior passHref>
-                <SidebarMenuButton
-                  isActive={isActive('/reports')}
-                  tooltip="Reports"
-                  aria-label="Reports"
-                >
+              <SidebarMenuButton
+                asChild
+                isActive={isActive('/reports')}
+                tooltip="Reports"
+                aria-label="Reports"
+              >
+                <Link href="/reports">
                   <FileText />
                   <span>Reports</span>
-                </SidebarMenuButton>
-              </Link>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <Link href="/settings" legacyBehavior passHref>
-                <SidebarMenuButton
-                  isActive={isActive('/settings')}
-                  tooltip="Settings"
-                  aria-label="Settings"
-                >
+              <SidebarMenuButton
+                asChild
+                isActive={isActive('/settings')}
+                tooltip="Settings"
+                aria-label="Settings"
+              >
+                <Link href="/settings">
                   <Settings />
                   <span>Settings</span>
-                </SidebarMenuButton>
-              </Link>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarContent>
