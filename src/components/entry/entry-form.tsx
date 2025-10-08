@@ -20,10 +20,16 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { createEntry } from '@/lib/actions';
-import type { Product } from '@/lib/types';
+import type { ProductCategory } from '@/lib/types';
 import { Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+
+type ProductData = {
+    id: ProductCategory;
+    name: ProductCategory;
+    maxSlots: number;
+}
 
 const initialState = {
   message: null,
@@ -40,7 +46,7 @@ function SubmitButton() {
     );
 }
 
-export function EntryForm({ products }: { products: Product[] }) {
+export function EntryForm({ products }: { products: ProductData[] }) {
   const [state, dispatch] = useFormState(createEntry, initialState);
   const { toast } = useToast();
 
