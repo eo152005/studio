@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -19,13 +19,46 @@ import { AlertCircle } from 'lucide-react';
 
 const OVERSTAY_HOURS = 24;
 
-export function ParkedVehiclesTable({ data }: { data: ParkingRecord[] }) {
-  const [selectedVehicle, setSelectedVehicle] = useState<ParkingRecord | null>(null);
-
-  const isOverstayed = (timeIn: Date) => {
+function ClientFormattedDate({ date }: { date: Date | string }) {
+    const [formattedDate, setFormattedDate] = useState('');
+    const [relativeDate, setRelativeDate] = useState('');
+  
+    useEffect(() => {
+      const d = new Date(date);
+      setFormattedDate(d.toLocaleString());
+      setRelativeDate(formatDistanceToNow(d, { addSuffix: true }));
+    }, [date]);
+  
+    if (!formattedDate) {
+      return null;
+    }
+  
+    return (
+        <>
+            <TableCell>
+                {formattedDate}
+            </TableCell>
+            <TableCell>
+                {relativeDate}
+                {isOverstayed(new Date(date)) && (
+                <Badge variant="destructive" className="ml-2">
+                    <AlertCircle className="w-3 h-3 mr-1" />
+                    Overstay
+                </Badge>
+                )}
+            </TableCell>
+        </>
+    );
+}
+  
+const isOverstayed = (timeIn: Date) => {
     const hoursParked = (new Date().getTime() - new Date(timeIn).getTime()) / (1000 * 60 * 60);
     return hoursParked > OVERSTAY_HOURS;
-  };
+};
+
+
+export function ParkedVehiclesTable({ data }: { data: ParkingRecord[] }) {
+  const [selectedVehicle, setSelectedVehicle] = useState<ParkingRecord | null>(null);
 
   return (
     <>
@@ -54,18 +87,7 @@ export function ParkedVehiclesTable({ data }: { data: ParkingRecord[] }) {
                     <TableCell>
                       <Badge variant="secondary">{vehicle.product}</Badge>
                     </TableCell>
-                    <TableCell>
-                      {new Date(vehicle.timeIn).toLocaleString()}
-                    </TableCell>
-                    <TableCell>
-                      {formatDistanceToNow(new Date(vehicle.timeIn), { addSuffix: true })}
-                      {isOverstayed(new Date(vehicle.timeIn)) && (
-                        <Badge variant="destructive" className="ml-2">
-                            <AlertCircle className="w-3 h-3 mr-1" />
-                            Overstay
-                        </Badge>
-                      )}
-                    </TableCell>
+                    <ClientFormattedDate date={vehicle.timeIn} />
                     <TableCell className="text-right">
                       <Button
                         variant="outline"

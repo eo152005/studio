@@ -21,6 +21,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useEffect, useState } from 'react';
+
+function ClientFormattedDate({ date }: { date: Date | string | undefined }) {
+  const [formattedDate, setFormattedDate] = useState('N/A');
+
+  useEffect(() => {
+    if (date) {
+      setFormattedDate(new Date(date).toLocaleString());
+    }
+  }, [date]);
+
+  return <>{formattedDate}</>;
+}
+
 
 export function ReportsTable({ data, products }: { data: ParkingRecord[]; products: Product[] }) {
   const router = useRouter();
@@ -83,8 +97,8 @@ export function ReportsTable({ data, products }: { data: ParkingRecord[]; produc
                   <TableCell>
                     <Badge variant="secondary">{vehicle.product}</Badge>
                   </TableCell>
-                  <TableCell>{new Date(vehicle.timeIn).toLocaleString()}</TableCell>
-                  <TableCell>{vehicle.timeOut ? new Date(vehicle.timeOut).toLocaleString() : 'N/A'}</TableCell>
+                  <TableCell><ClientFormattedDate date={vehicle.timeIn} /></TableCell>
+                  <TableCell><ClientFormattedDate date={vehicle.timeOut} /></TableCell>
                   <TableCell>{vehicle.duration || 'N/A'}</TableCell>
                 </TableRow>
               ))

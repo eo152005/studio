@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransition } from 'react';
+import { useTransition, useState, useEffect } from 'react';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -25,6 +25,13 @@ interface ExitDialogProps {
 export function ExitDialog({ vehicle, open, onOpenChange }: ExitDialogProps) {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
+  const [timeIn, setTimeIn] = useState('');
+
+  useEffect(() => {
+    if (vehicle.timeIn) {
+      setTimeIn(new Date(vehicle.timeIn).toLocaleString());
+    }
+  }, [vehicle.timeIn]);
 
   const handleExit = () => {
     startTransition(async () => {
@@ -59,7 +66,7 @@ export function ExitDialog({ vehicle, open, onOpenChange }: ExitDialogProps) {
             <p><strong>Token No:</strong> {vehicle.id}</p>
             <p><strong>Truck No:</strong> {vehicle.truckNumber}</p>
             <p><strong>Product:</strong> {vehicle.product}</p>
-            <p><strong>Time In:</strong> {new Date(vehicle.timeIn).toLocaleString()}</p>
+            <p><strong>Time In:</strong> {timeIn}</p>
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel asChild>
