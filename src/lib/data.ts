@@ -28,6 +28,7 @@ export const getParkedVehicles = () => [...parkedVehicles];
 export const getParkingHistory = () => [...parkingHistory];
 export const getProducts = () => [...products];
 
+export const getProductById = (id: string) => products.find(p => p.id === id);
 export const getProductByName = (name: ProductCategory) => products.find(p => p.name === name);
 
 export const getParkedCountByProduct = (product: ProductCategory) => {

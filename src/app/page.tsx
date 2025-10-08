@@ -7,7 +7,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 export default function DashboardPage() {
   const products = getProducts();
   const productStats = products.map(product => ({
-    ...product,
+    id: product.id,
+    name: product.name,
+    maxSlots: product.maxSlots,
     current: getParkedCountByProduct(product.id),
   }));
 
