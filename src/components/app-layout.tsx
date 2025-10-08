@@ -6,7 +6,6 @@ import {
   FileText,
   Gauge,
   Settings,
-  BrainCircuit,
   Truck,
 } from 'lucide-react';
 
@@ -75,18 +74,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 >
                   <FileText />
                   <span>Reports</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <Link href="/prediction" legacyBehavior passHref>
-                <SidebarMenuButton
-                  isActive={isActive('/prediction')}
-                  tooltip="Demand Prediction"
-                  aria-label="Demand Prediction"
-                >
-                  <BrainCircuit />
-                  <span>Prediction</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
