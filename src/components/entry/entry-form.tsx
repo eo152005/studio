@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
 import {
   Card,
   CardContent,
@@ -22,7 +22,7 @@ import { Button } from '@/components/ui/button';
 import { createEntry } from '@/lib/actions';
 import type { ProductCategory } from '@/lib/types';
 import { Loader2 } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useActionState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import {
     Collapsible,
@@ -54,7 +54,7 @@ function SubmitButton() {
 }
 
 export function EntryForm({ products }: { products: ProductData[] }) {
-  const [state, dispatch] = useFormState(createEntry, initialState);
+  const [state, dispatch] = useActionState(createEntry, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
