@@ -34,8 +34,10 @@ export async function createEntry(prevState: any, formData: FormData) {
   }
   
   revalidatePath('/');
-  revalidatePath('/entry');
-  redirect('/');
+  return {
+    errors: null,
+    message: null,
+  }
 }
 
 export async function createExit(id: string) {

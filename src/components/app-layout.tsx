@@ -2,7 +2,6 @@
 
 import { usePathname } from 'next/navigation';
 import {
-  Car,
   FileText,
   Gauge,
   Settings,
@@ -51,19 +50,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 <Link href="/">
                   <Gauge />
                   <span>Dashboard</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                asChild
-                isActive={isActive('/entry')}
-                tooltip="New Entry"
-                aria-label="New Entry"
-              >
-                <Link href="/entry">
-                  <Car />
-                  <span>New Entry</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

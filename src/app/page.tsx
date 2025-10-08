@@ -3,6 +3,7 @@ import { StatsCards } from '@/components/dashboard/stats-cards';
 import { ParkedVehiclesTable } from '@/components/dashboard/parked-vehicles-table';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EntryForm } from '@/components/entry/entry-form';
 
 export default function DashboardPage() {
   const products = getProducts();
@@ -14,9 +15,12 @@ export default function DashboardPage() {
   }));
 
   const parkedVehicles = getParkedVehicles();
+  const productData = products.map(({ icon, ...rest }) => rest);
 
   return (
     <div className="space-y-6">
+      <EntryForm products={productData} />
+
       <Suspense fallback={<StatsSkeleton />}>
         <StatsCards stats={productStats} />
       </Suspense>
